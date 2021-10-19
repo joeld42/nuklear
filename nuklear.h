@@ -3126,6 +3126,10 @@ NK_API void nk_label_wrap(struct nk_context*, const char*);
 NK_API void nk_label_colored_wrap(struct nk_context*, const char*, struct nk_color);
 NK_API void nk_image(struct nk_context*, struct nk_image);
 NK_API void nk_image_color(struct nk_context*, struct nk_image, struct nk_color);
+
+NK_API void nk_nine_slice(struct nk_context *ctx, struct nk_nine_slice img);
+NK_API void nk_nine_slice_color(struct nk_context *ctx, struct nk_nine_slice img, struct nk_color col);
+
 #ifdef NK_INCLUDE_STANDARD_VARARGS
 NK_API void nk_labelf(struct nk_context*, nk_flags, NK_PRINTF_FORMAT_STRING const char*, ...) NK_PRINTF_VARARG_FUNC(3);
 NK_API void nk_labelf_colored(struct nk_context*, nk_flags, struct nk_color, NK_PRINTF_FORMAT_STRING const char*,...) NK_PRINTF_VARARG_FUNC(4);
@@ -23611,6 +23615,36 @@ nk_nine_slice_is_sub9slice(const struct nk_nine_slice* slice)
     return !(slice->img.w == 0 && slice->img.h == 0);
 }
 
+NK_API void
+nk_nine_slice(struct nk_context *ctx, struct nk_nine_slice img)
+{
+    struct nk_window *win;
+    struct nk_rect bounds;
+
+    NK_ASSERT(ctx);
+    NK_ASSERT(ctx->current);
+    NK_ASSERT(ctx->current->layout);
+    if (!ctx || !ctx->current || !ctx->current->layout) return;
+
+    win = ctx->current;
+    if (!nk_widget(&bounds, ctx)) return;
+    nk_draw_nine_slice(&win->buffer, bounds, &img, nk_white);
+}
+NK_API void
+nk_nine_slice_color(struct nk_context *ctx, struct nk_nine_slice img, struct nk_color col)
+{
+    struct nk_window *win;
+    struct nk_rect bounds;
+
+    NK_ASSERT(ctx);
+    NK_ASSERT(ctx->current);
+    NK_ASSERT(ctx->current->layout);
+    if (!ctx || !ctx->current || !ctx->current->layout) return;
+
+    win = ctx->current;
+    if (!nk_widget(&bounds, ctx)) return;
+    nk_draw_nine_slice(&win->buffer, bounds, &img, col);
+}
 
 
 
